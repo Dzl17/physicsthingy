@@ -54,7 +54,7 @@ void Actor::moveX(float amount, std::vector<Solid*> solids)
                 this->x += sign;
                 move -= sign;
             } else {
-                collided = true;
+                collidedX = true;
                 break;
             }
         }
@@ -71,7 +71,7 @@ void Actor::moveY(float amount, std::vector<Solid*> solids)
                 this->y += sign;
                 move -= sign;
             } else {
-                collided = true;
+                collidedY = true;
                 break;
             }
         }

@@ -14,7 +14,7 @@ std::vector<Solid*> solids;
 
 void startup()
 {
-    actors.push_back(new Controllable(1280/2,500,64,64));
+    actors.push_back(new Controllable(900,100,64,64));
     solids.push_back(new Floor(50));
     solids.push_back(new Block(900,400,64,128));
 }

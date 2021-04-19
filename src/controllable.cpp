@@ -4,6 +4,8 @@
 #define SPEED 0.9f
 #define FRICTION 0.8f
 #define SPEEDLIMIT 18
+#define GRAVITY 0.6f
+#define JUMP -20
 
 Controllable::Controllable(int x, int y, int width, int height) {
     this->setX(x);
@@ -62,8 +64,13 @@ void Controllable::update(std::vector<Solid*> solids) {
     // Input
     if (Input::down(Key::Left)) this->addAccX(-SPEED);
     if (Input::down(Key::Right)) this->addAccX(SPEED);
-    if (Input::down(Key::Up)) std::cout << "UP" << std::endl;
+    if ((Input::down(Key::Up) || Input::pressed(Key::Space)) && collideAt(solids, 0, 1)) {
+        this->addSpeedY(JUMP);
+        this->setX(this->getX() + 1);
+    }
     if (Input::down(Key::Down)) std::cout << "DOWN" << std::endl;
+    // Gravity
+    this->addAccY(GRAVITY);
     // Speed addition
     if (std::abs(this->speedX + this->accX) < SPEEDLIMIT) this->addSpeedX(this->accX);
     this->addSpeedY(this->accY);
@@ -75,10 +82,12 @@ void Controllable::update(std::vector<Solid*> solids) {
     // Movement addition
     this->moveX(speedX, solids);
     this->moveY(speedY, solids);
-    if (this->collided) {
+    if (this->collidedX) {
         this->speedX = 0;
+        this->collidedX = false;
+    } else if (this->collidedY) {
         this->speedY = 0;
-        this->collided = false;
+        this->collidedY = false;
     }
 
     // Circular screen TODO improve

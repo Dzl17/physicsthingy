@@ -19,7 +19,8 @@ public:
     int getY();
     int getWidth();
     int getHeight();
-    bool collided;
+    bool collidedX;
+    bool collidedY;
     void moveX(float amount, std::vector<Solid*> solids);
     void moveY(float amount, std::vector<Solid*> solids);
     bool collideAt(int x, int y, int w, int h);
