@@ -1,4 +1,5 @@
 #include <blah.h>
+#include <iostream>
 
 #include "actor.h"
 #include "solid.h"
@@ -32,7 +33,7 @@ void render()
     }
 
     for (auto & actor:actors) {
-        actor->update(solids);
+        if (!Entity::grabFlag) actor->update(solids);
         actor->draw(&batch);
     }
 
@@ -76,6 +77,7 @@ void update()
     }
     // Entity deleting
     for (auto it = solids.begin(); it != solids.end();) {
+        (*it)->updateGrabbing();
         if ((*it)->deleting()) {
             auto s = *it;
             it = solids.erase(it);
@@ -84,6 +86,7 @@ void update()
         else it++;
     }
     for (auto it = actors.begin(); it != actors.end();) {
+        (*it)->updateGrabbing();
         if ((*it)->deleting()) {
             auto s = *it;
             it = actors.erase(it);

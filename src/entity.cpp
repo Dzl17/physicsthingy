@@ -3,6 +3,8 @@
 
 using namespace Blah;
 
+bool Entity::grabFlag = false;
+
 int Entity::getX() const {
     return x;
 }
@@ -45,11 +47,33 @@ void Entity::addY(int amount)
     this->y += amount;
 }
 
-bool Entity::deleting() {
+bool Entity::deleting() const {
     Vec2 m = Input::mouse();
     return  this->x <= (int)m.x &&
             this->x + this->width >= (int)m.x &&
             this->y <= (int)m.y &&
             this->y + this->height >= (int)m.y &&
             Input::pressed(Key::D);
+}
+
+void Entity::updateGrabbing() {
+    Vec2 m = Input::mouse();
+    if(     this->x <= (int)m.x &&
+            this->x + this->width >= (int)m.x &&
+            this->y <= (int)m.y &&
+            this->y + this->height >= (int)m.y &&
+            Input::down(MouseButton::Left) &&
+            !this->grabbed && !grabFlag) {
+        this->grabbed = true;
+        grabFlag = true;
+    }
+
+    if (this->grabbed) {
+        this->setX((int) m.x - this->getWidth()/2);
+        this->setY((int) m.y - this->getHeight()/2);
+        if (Input::released(MouseButton::Left)) {
+            this->grabbed = false;
+            grabFlag = false;
+        }
+    }
 }
