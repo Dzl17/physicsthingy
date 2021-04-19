@@ -2,9 +2,9 @@
 #include <iostream> // TEMP
 
 #define SPEED 0.9f
-#define FRICTION 0.8f
+#define FRICTION 1.8f
 #define SPEEDLIMIT 18
-#define GRAVITY 0.6f
+#define GRAVITY 0.9f
 #define JUMP -20
 
 Controllable::Controllable(int x, int y, int width, int height) {
@@ -65,8 +65,7 @@ void Controllable::update(std::vector<Solid*> solids) {
     if (Input::down(Key::Left)) this->addAccX(-SPEED);
     if (Input::down(Key::Right)) this->addAccX(SPEED);
     if ((Input::down(Key::Up) || Input::pressed(Key::Space)) && collideAt(solids, 0, 1)) {
-        this->addSpeedY(JUMP);
-        this->setX(this->getX() + 1);
+        this->addSpeedY(JUMP); // TODO regulate jump
     }
     if (Input::down(Key::Down)) std::cout << "DOWN" << std::endl;
     // Gravity
@@ -76,7 +75,8 @@ void Controllable::update(std::vector<Solid*> solids) {
     this->addSpeedY(this->accY);
     // Friction
     if (!Input::down(Key::Left) && !Input::down(Key::Right)) {
-        if (this->speedX > 0) this->addSpeedX(-FRICTION);
+        if (std::abs(this->speedX) - FRICTION <= 0) this->speedX = 0;
+        else if (this->speedX > 0) this->addSpeedX(-FRICTION);
         else this->addSpeedX(FRICTION);
     }
     // Movement addition

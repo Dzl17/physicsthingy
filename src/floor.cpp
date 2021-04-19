@@ -1,10 +1,10 @@
 #include <iostream>
 #include "floor.h"
 
-Floor::Floor(int height) {
-    this->setX(0);
+Floor::Floor(int width, int height) {
+    this->setX(0 - (width - App::width())/2);
     this->setY(App::height() - height);
-    this->setWidth(App::width());
+    this->setWidth(width);
     this->setHeight(height);
 }
 
