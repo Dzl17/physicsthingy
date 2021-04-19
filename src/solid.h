@@ -8,7 +8,7 @@ class Solid : public Entity{
 protected:
     Solid() = default;
 public:
-    ~Solid() = default;
+    virtual ~Solid() = default;
     virtual void draw(Blah::Batch *batch) = 0;
 };
 

@@ -7,6 +7,7 @@ using namespace Blah;
 class Block : public Solid{
 public:
     Block(int x, int y, int width, int height);
+    ~Block() override;
     void draw(Batch *batch) override;
 };
 

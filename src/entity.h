@@ -12,6 +12,7 @@ protected:
     void setWidth(int width);
     void setHeight(int height);
 public:
+    virtual ~Entity() = default;
     int getX() const;
     int getY() const;
     int getWidth() const;
