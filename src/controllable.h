@@ -10,7 +10,7 @@ private:
     float accX, accY; // Acceleration
 public:
     Controllable(int x, int y, int width, int height);
-    ~Controllable();
+    ~Controllable() override;
     float getSpeedX();
     float getSpeedY();
     float getAccX();

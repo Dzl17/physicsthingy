@@ -45,19 +45,21 @@ void render()
 void update()
 {
     if (Input::pressed(Key::Escape)) App::exit();
-    if (Input::pressed(Key::C)) actors.push_back(new Controllable(900,100,64,64));;
+    if (Input::pressed(Key::C)) actors.push_back(new Controllable((int)Input::mouse().x, (int)Input::mouse().y,64,64));;
     // Entity deleting
     for (auto it = solids.begin(); it != solids.end();) {
         if ((*it)->deleting()) {
+            auto s = *it;
             it = solids.erase(it);
-            delete *it;
+            delete s;
         }
         else it++;
     }
     for (auto it = actors.begin(); it != actors.end();) {
         if ((*it)->deleting()) {
+            auto s = *it;
             it = actors.erase(it);
-            delete *it;
+            delete s;
         }
         else it++;
     }

@@ -9,7 +9,7 @@ class Actor : public Entity{
 protected:
     Actor() = default;
 public:
-    ~Actor() = default;
+    virtual ~Actor() = default;
     bool collidedX;
     bool collidedY;
     void moveX(float amount, std::vector<Solid*> solids);

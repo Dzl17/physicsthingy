@@ -20,7 +20,7 @@ Controllable::Controllable(int x, int y, int width, int height) {
 
 Controllable::~Controllable()
 {
-
+    std::cout << "Controllable destroyed" << std::endl;
 }
 
 float Controllable::getSpeedX(){
