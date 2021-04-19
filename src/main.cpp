@@ -10,11 +10,13 @@
 using namespace Blah;
 
 Batch batch;
+SpriteFont font;
 std::vector<Actor*> actors; // TODO use smart pointers instead, avoid casting on the push_back() calls
 std::vector<Solid*> solids;
 
 void startup()
 {
+    font = SpriteFont("../assets/fonts/JetBrainsMono-Regular.ttf", 18);
     actors.push_back(new Controllable(900,100,64,64));
     solids.push_back(new Floor(2000, 50));
     solids.push_back(new Block(900,400,64,128));
@@ -36,6 +38,12 @@ void render()
         if (!Entity::grabFlag) actor->update(solids);
         actor->draw(&batch);
     }
+
+    char buffer[64];
+    snprintf(buffer, sizeof buffer, "SpeedX: %f", ((Controllable*) actors[0])->getSpeedX());
+    batch.str(font, buffer, Vec2(10, 10), Color::white);
+    snprintf(buffer, sizeof buffer, "SpeedY: %f", ((Controllable*) actors[0])->getSpeedY());
+    batch.str(font, buffer, Vec2(10, 30), Color::white);
 
     batch.pop_matrix();
 
