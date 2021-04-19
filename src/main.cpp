@@ -44,7 +44,17 @@ void render()
 
 void update()
 {
-    if (Input::down(Key::Escape)) App::exit();
+    if (Input::pressed(Key::Escape)) App::exit();
+    if (Input::pressed(Key::C)) actors.push_back(new Controllable(900,100,64,64));;
+    // Entity deleting
+    for (auto it = solids.begin(); it != solids.end();) {
+        if ((*it)->deleting()) it = solids.erase(it);
+        else it++;
+    }
+    for (auto it = actors.begin(); it != actors.end();) {
+        if ((*it)->deleting()) it = actors.erase(it);
+        else it++;
+    }
 }
 
 void shutdown()

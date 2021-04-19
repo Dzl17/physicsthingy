@@ -2,23 +2,14 @@
 #define ACTOR_H
 
 #include <blah.h>
+#include "entity.h"
 #include "solid.h"
 
-class Actor {
-private:
-    int x, y, width, height;
+class Actor : public Entity{
 protected:
     Actor() = default;
-    void setX(int x);
-    void setY(int y);
-    void setWidth(int width);
-    void setHeight(int height);
 public:
     ~Actor() = default;
-    int getX();
-    int getY();
-    int getWidth();
-    int getHeight();
     bool collidedX;
     bool collidedY;
     void moveX(float amount, std::vector<Solid*> solids);

@@ -202,6 +202,6 @@ add_executable(physicsthingy ${SOURCE_FILES}
         blah/src/internal/graphics_backend_dummy.cpp
         blah/src/internal/platform_backend_sdl2.cpp
         blah/src/internal/platform_backend_win32.cpp
-        src/floor.cpp src/floor.h src/block.cpp src/block.h)
+        src/floor.cpp src/floor.h src/block.cpp src/block.h src/entity.cpp src/entity.h)
 
 target_link_libraries(physicsthingy PUBLIC ${LIBS} SDL2)
