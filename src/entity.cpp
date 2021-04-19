@@ -49,11 +49,17 @@ void Entity::addY(int amount)
 
 bool Entity::deleting() const {
     Vec2 m = Input::mouse();
-    return  this->x <= (int)m.x &&
+    bool b =this->x <= (int)m.x &&
             this->x + this->width >= (int)m.x &&
             this->y <= (int)m.y &&
             this->y + this->height >= (int)m.y &&
             Input::pressed(Key::D);
+    if (b) {
+        if (this->grabbed) grabFlag = false;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void Entity::updateGrabbing() {
