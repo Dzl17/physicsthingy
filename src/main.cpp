@@ -45,7 +45,13 @@ void render()
 void update()
 {
     if (Input::pressed(Key::Escape)) App::exit();
-    if (Input::pressed(Key::C)) actors.push_back(new Controllable((int)Input::mouse().x, (int)Input::mouse().y,64,64));;
+    if (Input::pressed(Key::C)) {
+        int x = (int)Input::mouse().x;
+        int y = (int)Input::mouse().y;
+        auto c = new Controllable(x, y,64,64);
+        if (!c->collideAt(solids, 0, 0)) actors.push_back(c); // TODO check before creation
+        else delete c;
+    }
     // Entity deleting
     for (auto it = solids.begin(); it != solids.end();) {
         if ((*it)->deleting()) {

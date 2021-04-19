@@ -21,5 +21,7 @@ public:
     virtual void update(std::vector<Solid*>) = 0;
 };
 
+static bool collide(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2);
+static bool collide(Solid* solid, int x, int y, int w, int h);
 
 #endif

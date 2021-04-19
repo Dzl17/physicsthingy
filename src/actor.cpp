@@ -1,8 +1,5 @@
 #include "actor.h"
 
-static bool collide(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2);
-static bool collide(Solid* solid, int x, int y, int w, int h);
-
 void Actor::moveX(float amount, std::vector<Solid*> solids)
 {
     // https://maddythorson.medium.com/celeste-and-towerfall-physics-d24bd2ae0fc5
