@@ -47,6 +47,14 @@ void Entity::addY(int amount)
     this->y += amount;
 }
 
+void Entity::addWidth(int amount) {
+    this->width += amount;
+}
+
+void Entity::addHeight(int amount) {
+    this->height += amount;
+}
+
 bool Entity::deleting() const {
     Vec2 m = Input::mouse();
     bool b =this->x <= (int)m.x &&

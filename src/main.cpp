@@ -35,15 +35,20 @@ void render()
     }
 
     for (auto & actor:actors) {
-        if (!Entity::grabFlag) actor->update(solids);
         actor->draw(&batch);
     }
 
     char buffer[64];
-    snprintf(buffer, sizeof buffer, "SpeedX: %f", ((Controllable*) actors[0])->getSpeedX());
+    snprintf(buffer, sizeof buffer, "FPS: %f", 1.0/Time::delta);
     batch.str(font, buffer, Vec2(10, 10), Color::white);
-    snprintf(buffer, sizeof buffer, "SpeedY: %f", ((Controllable*) actors[0])->getSpeedY());
+    snprintf(buffer, sizeof buffer, "SpeedX: %f", ((Controllable*) actors[0])->getSpeedX());
     batch.str(font, buffer, Vec2(10, 30), Color::white);
+    snprintf(buffer, sizeof buffer, "SpeedY: %f", ((Controllable*) actors[0])->getSpeedY());
+    batch.str(font, buffer, Vec2(10, 50), Color::white);
+    snprintf(buffer, sizeof buffer, "Actors: %d", actors.size());
+    batch.str(font, buffer, Vec2(10, 70), Color::white);
+    snprintf(buffer, sizeof buffer, "Solids: %d", solids.size());
+    batch.str(font, buffer, Vec2(10, 90), Color::white);
 
     batch.pop_matrix();
 
@@ -95,6 +100,7 @@ void update()
     }
     for (auto it = actors.begin(); it != actors.end();) {
         (*it)->updateGrabbing();
+        if (!Entity::grabFlag) (*it)->update(solids);
         if ((*it)->deleting()) {
             auto s = *it;
             it = actors.erase(it);

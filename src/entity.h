@@ -23,6 +23,8 @@ public:
     int getHeight() const;
     void addX(int amount);
     void addY(int amount);
+    void addWidth(int amount);
+    void addHeight(int amount);
 
     bool deleting() const;
     void updateGrabbing();
