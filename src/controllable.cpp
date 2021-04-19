@@ -65,7 +65,7 @@ void Controllable::update(std::vector<Solid*> solids) {
     if (Input::down(Key::Left)) this->addAccX(-SPEED);
     if (Input::down(Key::Right)) this->addAccX(SPEED);
     if ((Input::down(Key::Up) || Input::pressed(Key::Space)) && collideAt(solids, 0, 1)) {
-        this->addSpeedY(JUMP); // TODO regulate jump
+        this->addSpeedY(JUMP); // TODO regulate jump (more height depending on the pressing time)
     }
     if (Input::down(Key::Down)) std::cout << "DOWN" << std::endl;
     // Gravity
