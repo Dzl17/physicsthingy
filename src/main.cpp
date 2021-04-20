@@ -14,6 +14,11 @@ SpriteFont font;
 std::vector<Actor*> actors; // TODO use smart pointers instead, avoid casting on the push_back() calls
 std::vector<Solid*> solids;
 
+void writeStats();
+void updateKeyboardInput();
+void updateActors();
+void updateSolids();
+
 void startup()
 {
     font = SpriteFont("../assets/fonts/JetBrainsMono-Regular.ttf", 18);
@@ -28,16 +33,58 @@ void render()
 
     auto scale = Vec2((float) App::width()/1280, (float) App::height()/720);
     auto transform = Mat3x2::create_transform(Vec2::zero, Vec2::zero, scale, 0);
-    batch.push_matrix(transform);
 
+    batch.push_matrix(transform);
     for (auto & solid:solids) {
         solid->draw(&batch);
     }
-
     for (auto & actor:actors) {
         actor->draw(&batch);
     }
+    writeStats();
+    batch.pop_matrix();
 
+    batch.render();
+    batch.clear();
+}
+
+void update()
+{
+    updateKeyboardInput();
+    // Entity updating
+    updateActors();
+    updateSolids();
+}
+
+void shutdown()
+{
+    for (auto & actor:actors) {
+        delete actor;
+    }
+
+    for (auto & solid:solids) {
+        delete solid;
+    }
+}
+
+int main()
+{
+    Config config;
+    config.name = "Physics thingy";
+    config.width = 1280;
+    config.height = 720;
+    config.target_framerate = 60;
+    config.on_startup = startup;
+    config.on_render = render;
+    config.on_update = update;
+    config.on_shutdown = shutdown;
+
+    App::run(&config);
+    return 0;
+}
+
+void writeStats()
+{
     char buffer[64];
     snprintf(buffer, sizeof buffer, "FPS: %f", 1.0/Time::delta);
     batch.str(font, buffer, Vec2(10, 10), Color::white);
@@ -49,16 +96,23 @@ void render()
     batch.str(font, buffer, Vec2(10, 70), Color::white);
     snprintf(buffer, sizeof buffer, "Solids: %d", solids.size());
     batch.str(font, buffer, Vec2(10, 90), Color::white);
-
-    batch.pop_matrix();
-
-    batch.render();
-    batch.clear();
 }
 
-void update()
+void updateKeyboardInput()
 {
     if (Input::pressed(Key::Escape)) App::exit();
+    if (Input::pressed(Key::O)) { // Delete all actors
+        for (auto & actor:actors) {
+            delete actor;
+        }
+        actors.clear();
+    }
+    if (Input::pressed(Key::P)) { // Delete all solids
+        for (auto & solid:solids) {
+            delete solid;
+        }
+        solids.clear();
+    }
     if (Input::pressed(Key::C)) { // Controllable
         int x = (int)Input::mouse().x;
         int y = (int)Input::mouse().y;
@@ -88,16 +142,10 @@ void update()
         if (!collide) solids.push_back(c);
         else delete c;
     }
-    // Entity deleting
-    for (auto it = solids.begin(); it != solids.end();) {
-        (*it)->updateGrabbing();
-        if ((*it)->deleting()) {
-            auto s = *it;
-            it = solids.erase(it);
-            delete s;
-        }
-        else it++;
-    }
+}
+
+void updateActors()
+{
     for (auto it = actors.begin(); it != actors.end();) {
         (*it)->updateGrabbing();
         if (!Entity::grabFlag) (*it)->update(solids);
@@ -110,29 +158,15 @@ void update()
     }
 }
 
-void shutdown()
+void updateSolids()
 {
-    for (auto & actor:actors) {
-        delete actor;
+    for (auto it = solids.begin(); it != solids.end();) {
+        (*it)->updateGrabbing();
+        if ((*it)->deleting()) {
+            auto s = *it;
+            it = solids.erase(it);
+            delete s;
+        }
+        else it++;
     }
-
-    for (auto & solid:solids) {
-        delete solid;
-    }
-}
-
-int main()
-{
-    Config config;
-    config.name = "Physics thingy";
-    config.width = 1280;
-    config.height = 720;
-    config.target_framerate = 60;
-    config.on_startup = startup;
-    config.on_render = render;
-    config.on_update = update;
-    config.on_shutdown = shutdown;
-
-    App::run(&config);
-    return 0;
 }

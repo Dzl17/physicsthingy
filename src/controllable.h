@@ -19,6 +19,8 @@ public:
     void addSpeedY(float amount);
     void addAccX(float amount);
     void addAccY(float amount);
+    void resetSpeedX();
+    void resetSpeedY();
     void update(std::vector<Solid*> solids) override;
     void draw(Batch *batch) override;
 };

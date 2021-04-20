@@ -58,27 +58,30 @@ void Controllable::addAccY(float amount) {
     this->accY += amount;
 }
 
+void Controllable::resetSpeedX() {
+    this->speedX = 0;
+}
+
+void Controllable::resetSpeedY() {
+    this->speedY = 0;
+}
+
+void processInput(Controllable *c, std::vector<Solid*> solids);
+
 void Controllable::update(std::vector<Solid*> solids) {
+    // Acceleration resets
     this->accX = 0;
     this->accY = 0;
-    // Input
-    if (Input::down(Key::Left)) this->addAccX(-SPEED);
-    if (Input::down(Key::Right)) this->addAccX(SPEED);
-    if ((Input::down(Key::Up) || Input::pressed(Key::Space)) && collideAt(solids, 0, 1)) {
-        this->addSpeedY(JUMP); // TODO regulate jump (more height depending on the pressing time)
-    }
-    if (Input::down(Key::Down)) std::cout << "DOWN" << std::endl;
-    // Gravity
+
+    processInput(this, solids);
+
+    // Add gravity
     this->addAccY(GRAVITY);
-    // Speed addition
+
+    // Add speed
     if (std::abs(this->speedX + this->accX) < SPEEDLIMIT) this->addSpeedX(this->accX);
     this->addSpeedY(this->accY);
-    // Friction
-    if (!Input::down(Key::Left) && !Input::down(Key::Right)) {
-        if (std::abs(this->speedX) - FRICTION <= 0) this->speedX = 0;
-        else if (this->speedX > 0) this->addSpeedX(-FRICTION);
-        else this->addSpeedX(FRICTION);
-    }
+
     // Movement addition
     this->moveX(speedX, solids);
     this->moveY(speedY, solids);
@@ -90,9 +93,27 @@ void Controllable::update(std::vector<Solid*> solids) {
         this->collidedY = false;
     }
 
-    // Circular screen TODO improve
+    // Circular screen
     if (this->getX() > 1280) this->setX(-this->getWidth());
     if (this->getX() < 0 - this->getWidth()) this->setX(1280);
+}
+
+void processInput(Controllable *c, std::vector<Solid*> solids)
+{
+    // Input
+    if (Input::down(Key::Left)) c->addAccX(-SPEED);
+    if (Input::down(Key::Right)) c->addAccX(SPEED);
+    if ((Input::down(Key::Up) || Input::pressed(Key::Space)) && c->collideAt(solids, 0, 1)) {
+        c->addSpeedY(JUMP); // TODO regulate jump (more height depending on the pressing time)
+    }
+    if (Input::down(Key::Down)) std::cout << "DOWN" << std::endl;
+
+    // Friction
+    if (!Input::down(Key::Left) && !Input::down(Key::Right)) {
+        if (std::abs(c->getSpeedX()) - FRICTION <= 0) c->resetSpeedX();
+        else if (c->getSpeedX() > 0) c->addSpeedX(-FRICTION);
+        else c->addSpeedX(FRICTION);
+    }
 }
 
 void Controllable::draw(Blah::Batch *batch) {
