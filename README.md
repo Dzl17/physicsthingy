@@ -1,5 +1,5 @@
 # Physics Thingy
-Little personal learning project I'm working on.
+Little personal learning project.
 Heavily based (at least for now) on [this arcticle by Maddy Thorson](https://maddythorson.medium.com/celeste-and-towerfall-physics-d24bd2ae0fc5), developer of Celeste and Towerfall.
 
 ## Structure
